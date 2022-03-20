@@ -92,9 +92,62 @@ void Game::handleEvents()
 	case SDL_QUIT:
 		running = false;
 		break;
+	case SDL_MOUSEBUTTONDOWN:
+		hanldeMouseClick();
+		break;
 	default:
 		break;
 	}
+}
+
+void Game::hanldeMouseClick()
+{
+	int x, y;
+	Uint32 buttons;
+
+	SDL_PumpEvents();  // make sure we have the latest mouse state.
+
+	buttons = SDL_GetMouseState(&x, &y);
+
+	SDL_Log("Mouse cursor is at %d, %d", x, y);
+
+	// Check if the mouse click took place over a gem
+	if (x < gridSize && y < gridSize)
+	{
+		std::cout << "Gem was clicked on!" << std::endl;
+	}
+
+	// find which gem was clicked on
+	// gird size is know, the postion is equal to the x value / the gem size
+	int gemArrayPosX = floor(x / gemSize);
+	int gemArrayPosY = floor(y / gemSize);
+	std::cout << "gemArrayPosX: " << gemArrayPosX << " gemArrayPosY:" << gemArrayPosY << std::endl;
+
+
+	// this check if we are on the first or second click
+	if (firstClickGemPosX == -1) {
+		firstClickGemPosX = gemArrayPosX;
+		firstClickGemPosY = gemArrayPosY;
+	}
+	else {
+		secondClickGemPosX = gemArrayPosX;
+		secondClickGemPosY = gemArrayPosY;
+
+		std::cout << "Swapping: [" << firstClickGemPosX << "," << firstClickGemPosY << "] and [" << secondClickGemPosX << "," << secondClickGemPosY << "]" << std::endl;
+
+		handleGemSwap();
+	}
+}
+
+void Game::handleGemSwap()
+{
+	grid->SwapGems(firstClickGemPosX, firstClickGemPosY, secondClickGemPosX, secondClickGemPosY);
+
+	// finally reset all the  arrayPostions
+	firstClickGemPosX = -1;
+	firstClickGemPosY = -1;
+	secondClickGemPosX = -1;
+	secondClickGemPosY = -1;
 }
 
 void Game::update()

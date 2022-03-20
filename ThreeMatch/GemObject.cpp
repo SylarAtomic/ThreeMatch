@@ -14,6 +14,9 @@ GemObject::GemObject(const char* textureSheet, SDL_Renderer* _renderer, int x, i
 
 	xPos = x;
 	yPos = y;
+	updatePosX = x;
+	updatePosY = y;
+
 }
 
 void GemObject::Update()
@@ -26,6 +29,26 @@ void GemObject::Update()
 	//srcRect.x = 0;
 	//srcRect.y = 0;
 
+	if (updatePosX != xPos)
+	{
+		if (updatePosX > xPos) {
+			xPos++;
+		}
+		else {
+			xPos--;
+		}
+	}
+
+	if (updatePosY != yPos)
+	{
+		if (updatePosY > yPos) {
+			yPos++;
+		}
+		else {
+			yPos--;
+		}
+	}
+
 	destRect.x = xPos;
 	destRect.y = yPos;
 	destRect.w = gemSize;
@@ -37,4 +60,10 @@ void GemObject::Render()
 {
 
 	SDL_RenderCopy(renderer, gemTexture, NULL, &destRect);
+}
+
+void GemObject::UpdatePostion(int newX, int newY)
+{
+	updatePosX = newX;
+	updatePosY = newY;
 }

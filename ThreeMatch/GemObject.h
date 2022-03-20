@@ -9,10 +9,13 @@ public:
 	void Update();
 	void Render();
 	void ChangeTexture(const char* textureSheet);
+	void UpdatePostion(int newX, int newY);
 
 private:
 	int xPos = 0;
 	int yPos = 0;
+	int updatePosX = 0;
+	int updatePosY = 0;
 	
 	// 0 - Blue Gem
 	// 1 - Gren Gem

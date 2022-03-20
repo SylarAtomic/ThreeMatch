@@ -171,3 +171,24 @@ void Grid::UpdateGrid()
 	//gemFive->Update();
 
 }
+
+void Grid::SwapGems(int firstGemXpos, int firstGemYPos, int secondGemXPos, int secondGemYPos)
+{
+
+	// TODO add some kind of animation  that looks good, if we have time. YIKES
+	//GemObject* SwapItem = gemArray[firstGemXpos][firstGemYPos];
+	//gemArray[firstGemXpos][firstGemYPos] = gemArray[secondGemXPos][secondGemYPos];
+	//gemArray[secondGemXPos][secondGemYPos] = SwapItem;
+	gemArray[firstGemXpos][firstGemYPos]->UpdatePostion(secondGemXPos * gemSize, secondGemYPos * gemSize);
+	gemArray[secondGemXPos][secondGemYPos]->UpdatePostion(firstGemXpos * gemSize, firstGemYPos * gemSize);;
+	std::cout << gemArray[firstGemXpos][firstGemYPos] << std::endl;
+	std::cout << gemArray[secondGemXPos][secondGemYPos] << std::endl;
+
+	std::swap(gemArray[firstGemXpos][firstGemYPos], gemArray[secondGemXPos][secondGemYPos]);
+	std::cout << "Swapped!" << std::endl;
+
+	std::cout << gemArray[firstGemXpos][firstGemYPos] << std::endl;
+	std::cout << gemArray[secondGemXPos][secondGemYPos] << std::endl;
+
+
+}

@@ -9,6 +9,7 @@ public:
 	void BuildStartingGrid();
 	void RenderGrid();
 	void UpdateGrid();
+	void SwapGems(int firstGemXpos, int firstGemYPos, int secondGemXPos, int secondGemYPos);
 
 	GemObject* returnGemOne() { return gemOne; };
 
