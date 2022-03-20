@@ -13,7 +13,8 @@ public:
 	
 	void handleEvents(); // Handle user input
 	void hanldeMouseClick(); // Handle mouse clicks
-	void handleGemSwap(); // Tell gems to swap (dance time!)
+	void handleGemRemove(int xPos, int yPos);
+	void handleGemSwap(); // Tell gems to swap (dance time!) TODO: remove
 	void update();	// Update game elements
 	void render();	// Render to clean
 	void clean(); // Clean game memory

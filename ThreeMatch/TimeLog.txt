@@ -3,3 +3,9 @@ Get the libary download, set up the project, set up dependancies.
 Set up basic game function. Initial game loop. Set a background.
 // Game currently launches, shows the background, and has one gem displayed - Yay
 
+Getting grid to display with Grid and Gem class- 2 Hours - Remember to call Update....
+
+MouseClick and Swap function - 1 hour 30min
+
+Removing Blocks and adding new blocks - 3 hours
+Detection Algorth - ???

@@ -10,6 +10,8 @@ public:
 	void RenderGrid();
 	void UpdateGrid();
 	void SwapGems(int firstGemXpos, int firstGemYPos, int secondGemXPos, int secondGemYPos);
+	void RemoveGem(int x, int y);
+	void MoveGemsDown();
 
 	GemObject* returnGemOne() { return gemOne; };
 
@@ -17,6 +19,7 @@ private:
 	// functions
 	int GetRandomNumber();
 	int GetRandomNumberWithExclusion(int exclusion);
+	const char* GetTextureFromNumber(int randNumber);
 	void BuildImageGrid();
 		// debugging
 	void PrintGrid();
@@ -27,8 +30,13 @@ private:
 
 	const int numberOfGems = 3;
 	const int gemSize = 96;
+	int gemsToAdd[10];
 	
 	SDL_Renderer* renderer;
+
+	const char* BlueGemPath = "textures/BlueGem.png";
+	const char* GreenGemPath = "textures/GreenGem.png";
+	const char* RedGemPath = "textures/RedGem.png";
 
 	GemObject* gemOne;
 	GemObject* gemTwo;

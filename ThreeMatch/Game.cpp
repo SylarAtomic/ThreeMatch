@@ -115,39 +115,59 @@ void Game::hanldeMouseClick()
 	if (x < gridSize && y < gridSize)
 	{
 		std::cout << "Gem was clicked on!" << std::endl;
+
+		int gemArrayPosX = floor(x / gemSize);
+		int gemArrayPosY = floor(y / gemSize);
+
+		handleGemRemove(gemArrayPosX, gemArrayPosY);
+	
+
+	//// find which gem was clicked on
+	//// gird size is know, the postion is equal to the x value / the gem size
+	
+	//std::cout << "gemArrayPosX: " << gemArrayPosX << " gemArrayPosY:" << gemArrayPosY << std::endl;
+
+	//// this check if we are on the first or second click
+	//if (firstClickGemPosX == -1) {
+	//	firstClickGemPosX = gemArrayPosX;
+	//	firstClickGemPosY = gemArrayPosY;
+	//}
+	//else {
+	//	secondClickGemPosX = gemArrayPosX;
+	//	secondClickGemPosY = gemArrayPosY;
+
+	//	std::cout << "Swapping: [" << firstClickGemPosX << "," << firstClickGemPosY << "] and [" << secondClickGemPosX << "," << secondClickGemPosY << "]" << std::endl;
+
+	//	handleGemSwap();
+	//}
+
 	}
 
-	// find which gem was clicked on
-	// gird size is know, the postion is equal to the x value / the gem size
-	int gemArrayPosX = floor(x / gemSize);
-	int gemArrayPosY = floor(y / gemSize);
-	std::cout << "gemArrayPosX: " << gemArrayPosX << " gemArrayPosY:" << gemArrayPosY << std::endl;
 
-
-	// this check if we are on the first or second click
-	if (firstClickGemPosX == -1) {
-		firstClickGemPosX = gemArrayPosX;
-		firstClickGemPosY = gemArrayPosY;
-	}
-	else {
-		secondClickGemPosX = gemArrayPosX;
-		secondClickGemPosY = gemArrayPosY;
-
-		std::cout << "Swapping: [" << firstClickGemPosX << "," << firstClickGemPosY << "] and [" << secondClickGemPosX << "," << secondClickGemPosY << "]" << std::endl;
-
-		handleGemSwap();
-	}
 }
 
 void Game::handleGemSwap()
 {
-	grid->SwapGems(firstClickGemPosX, firstClickGemPosY, secondClickGemPosX, secondClickGemPosY);
+	// check if valid swap
+	int xMoveAmount = abs(firstClickGemPosX - secondClickGemPosX);
+	int yMoveAmount = abs(firstClickGemPosY - secondClickGemPosY);
 
-	// finally reset all the  arrayPostions
+	// only allow movement in x to x or y to y, no diagonals 
+	if (xMoveAmount != yMoveAmount && (xMoveAmount == 1 || yMoveAmount == 1))
+	{
+		grid->SwapGems(firstClickGemPosX, firstClickGemPosY, secondClickGemPosX, secondClickGemPosY);	
+	}
+
+	// finally reset all the arrayPostions - regardless of if a swap was valid
 	firstClickGemPosX = -1;
 	firstClickGemPosY = -1;
 	secondClickGemPosX = -1;
 	secondClickGemPosY = -1;
+}
+
+void Game::handleGemRemove(int xPos, int yPos)
+{
+	grid->RemoveGem(xPos, yPos);
 }
 
 void Game::update()
