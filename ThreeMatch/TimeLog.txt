@@ -13,6 +13,9 @@ Detection Algorth - 2 hours
 
 Score "text" - 1 hour 30 min
 
+Cleaning up (remove commentted out code, add usefull comments) - 1 hour
+
+Set specific number of matches - 1 hour 30 minutes
+
 Some bug fixing - 1 hour
 
-Cleaning up (remove commentted out code, add usefull comments) - 1 hour

@@ -407,6 +407,7 @@ void Grid::RemoveGem(int x, int y)
 	// std::cout << "gemsToAdd: " << gemsToAdd[x] << std::endl;
 
 	// Initial call to update the row and column
+	// TODO: This can be improve. It need to check at the end, UP, DOWN, RIGHT, LEFT. Should be recursive.
 	CheckUpAndDown(x, y, gemType);
 	CheckLeftRight(x, y, gemType);
 
@@ -428,6 +429,7 @@ void Grid::RemoveGem(int x, int y)
 // This handle moving the gems down when there is an open space
 // TODO: this could definetly be simplied and improved but it was a good way of showing a little how I think
 // Instead of solving the entire problems, I started by solving one part, then another and another.
+// There is a bug :-( if  gems are removed around a "C" shape, it will not know what to do an leave a "ghost" gem
 void Grid::MoveGemsDown()
 {
 	// This works backwards through the array
