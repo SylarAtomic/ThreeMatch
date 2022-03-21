@@ -200,25 +200,30 @@ void Grid::SwapGems(int firstGemXpos, int firstGemYPos, int secondGemXPos, int s
 
 void Grid::RemoveGem(int x, int y)
 {
+	int gemType = gemArray[x][y]->GetGemType();
 	gemArray[x][y]->UpdateGemTexture("textures/BlankGem.png");
 	gemArray[x][y]->SetGemForDeletion(true);
+	numberOfMatches++;
 
-	gemArray[x][y - 1]->UpdateGemTexture("textures/BlankGem.png");
+	/*gemArray[x][y - 1]->UpdateGemTexture("textures/BlankGem.png");
 	gemArray[x][y - 1]->SetGemForDeletion(true);
 
 	gemArray[x][y + 1]->UpdateGemTexture("textures/BlankGem.png");
 	gemArray[x][y + 1]->SetGemForDeletion(true);
 
 	gemArray[x + 1][y + 1]->UpdateGemTexture("textures/BlankGem.png");
-	gemArray[x + 1][y + 1]->SetGemForDeletion(true);
+	gemArray[x + 1][y + 1]->SetGemForDeletion(true);*/
 
 	// we update this array so we know how many gems need to be spawned in
 	gemsToAdd[x] = gemsToAdd[x]++;
-	gemsToAdd[x] = gemsToAdd[x]++;
-	gemsToAdd[x] = gemsToAdd[x]++;
-	gemsToAdd[x + 1] = gemsToAdd[x]++;
+	//gemsToAdd[x] = gemsToAdd[x]++;
+	//gemsToAdd[x] = gemsToAdd[x]++;
+	//gemsToAdd[x + 1] = gemsToAdd[x]++;
 
 	std::cout << "gemsToAdd: " << gemsToAdd[x] << std::endl;
+
+	CheckUpAndDown(x, y, gemType);
+	CheckLeftRight(x, y, gemType);
 
 	//int gemType = gemArray[x][y]->GetGemType();
 
@@ -249,6 +254,15 @@ void Grid::RemoveGem(int x, int y)
 	// loop through THAT Row
 	
 	MoveGemsDown();
+
+	// finally update the score
+	std::cout << "Number of matches: " << numberOfMatches << std::endl;
+
+	score += numberOfMatches;
+
+	std::cout << "Your current score is: " << score << std::endl;
+
+	numberOfMatches = 0;
 }
 
 void Grid::MoveGemsDown()
@@ -382,4 +396,85 @@ const char* Grid::GetTextureFromNumber(int randNumber)
 		return BlueGemPath;
 		break;
 	}
+}
+
+void Grid::CheckUpAndDown(int x, int y, int gemType)
+{
+	
+	if (y < 9)
+	{
+		// lets check up the column
+		for (int i = y + 1; i <= 9; i++) {
+			if (gemArray[x][i]->GetGemType() == gemType)
+			{
+				gemArray[x][i]->UpdateGemTexture("textures/BlankGem.png");
+				gemArray[x][i]->SetGemForDeletion(true);
+				numberOfMatches++;
+				gemsToAdd[x] = gemsToAdd[x]++;
+			}
+			else {
+				// exit as there is no point going on 
+				break;
+			}
+		}
+	}
+
+	// lets check down the column
+	if (y > 0) {
+		for (int i = y - 1; i >= 0; i--) {
+			if (gemArray[x][i]->GetGemType() == gemType)
+			{
+				gemArray[x][i]->UpdateGemTexture("textures/BlankGem.png");
+				gemArray[x][i]->SetGemForDeletion(true);
+				numberOfMatches++;
+				gemsToAdd[x] = gemsToAdd[x]++;
+			}
+			else {
+				// exit as there is no point going on 
+				break;
+			}
+		}
+	}
+}
+
+void Grid::CheckLeftRight(int x, int y, int gemType) {
+	// lets check to the right
+	if (x < 9)
+	{
+		for (int i = x + 1; i <= 9; i++) {
+			if (gemArray[i][y]->GetGemType() == gemType)
+			{
+				gemArray[i][y]->UpdateGemTexture("textures/BlankGem.png");
+				gemArray[i][y]->SetGemForDeletion(true);
+				numberOfMatches++;
+				gemsToAdd[i] = gemsToAdd[i]++;
+
+				CheckUpAndDown(i, y, gemType);
+			}
+			else {
+				// exit as there is no point going on 
+				break;
+			}
+		}
+	}
+
+	// lets check to the left
+	if (x > 0) {
+		for (int i = x - 1; i >= 0; i--) {
+			if (gemArray[i][y]->GetGemType() == gemType)
+			{
+				gemArray[i][y]->UpdateGemTexture("textures/BlankGem.png");
+				gemArray[i][y]->SetGemForDeletion(true);
+				numberOfMatches++;
+				gemsToAdd[i] = gemsToAdd[i]++;
+
+				CheckUpAndDown(i, y, gemType);
+			}
+			else {
+				// exit as there is no point going on 
+				break;
+			}
+		}
+	}
+
 }

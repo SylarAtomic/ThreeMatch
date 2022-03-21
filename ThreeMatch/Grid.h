@@ -19,6 +19,8 @@ private:
 	// functions
 	int GetRandomNumber();
 	int GetRandomNumberWithExclusion(int exclusion);
+	void CheckUpAndDown(int x, int y, int gemType);
+	void CheckLeftRight(int x, int y, int gemType);
 	const char* GetTextureFromNumber(int randNumber);
 	void BuildImageGrid();
 		// debugging
@@ -37,6 +39,9 @@ private:
 	const char* BlueGemPath = "textures/BlueGem.png";
 	const char* GreenGemPath = "textures/GreenGem.png";
 	const char* RedGemPath = "textures/RedGem.png";
+
+	int numberOfMatches = 0;
+	int score = 0;
 
 	GemObject* gemOne;
 	GemObject* gemTwo;
