@@ -7,5 +7,5 @@ Getting grid to display with Grid and Gem class- 2 Hours - Remember to call Upda
 
 MouseClick and Swap function - 1 hour 30min
 
-Removing Blocks and adding new blocks - 3 hours
+Removing Blocks and adding new blocks (single column) - 3 hours
 Detection Algorth - ???

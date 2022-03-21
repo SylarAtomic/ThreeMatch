@@ -203,16 +203,20 @@ void Grid::RemoveGem(int x, int y)
 	gemArray[x][y]->UpdateGemTexture("textures/BlankGem.png");
 	gemArray[x][y]->SetGemForDeletion(true);
 
-	//gemArray[x - 1][y]->UpdateGemTexture("textures/BlankGem.png");
-	//gemArray[x - 1][y]->SetGemForDeletion(true);
+	gemArray[x][y - 1]->UpdateGemTexture("textures/BlankGem.png");
+	gemArray[x][y - 1]->SetGemForDeletion(true);
 
-	//gemArray[x + 1][y]->UpdateGemTexture("textures/BlankGem.png");
-	//gemArray[x + 1][y]->SetGemForDeletion(true);
+	gemArray[x][y + 1]->UpdateGemTexture("textures/BlankGem.png");
+	gemArray[x][y + 1]->SetGemForDeletion(true);
+
+	gemArray[x + 1][y + 1]->UpdateGemTexture("textures/BlankGem.png");
+	gemArray[x + 1][y + 1]->SetGemForDeletion(true);
 
 	// we update this array so we know how many gems need to be spawned in
 	gemsToAdd[x] = gemsToAdd[x]++;
-	/*gemsToAdd[x - 1] = gemsToAdd[x - 1]++;
-	gemsToAdd[x + 1] = gemsToAdd[x + 1]++;*/
+	gemsToAdd[x] = gemsToAdd[x]++;
+	gemsToAdd[x] = gemsToAdd[x]++;
+	gemsToAdd[x + 1] = gemsToAdd[x]++;
 
 	std::cout << "gemsToAdd: " << gemsToAdd[x] << std::endl;
 
@@ -287,7 +291,7 @@ void Grid::MoveGemsDown()
 					gemsToAdd[i] = 0;
 				}
 				else {
-					// for a single row anywhere on the board
+					// for a single gem in a row anywhere on the board
 					if (gemsToAdd[i] == 1) {
 						GemObject* tempGem = gemArray[i][j];
 						int numberOfSwaps = j;
@@ -307,12 +311,60 @@ void Grid::MoveGemsDown()
 
 						gemsToAdd[i] = 0;
 					}
+					else {
+						int numberOfMoves = gemsToAdd[i];
+						GemObject* tempArray[10];
+						int arrayItemsCounter = 0;
+						for (int m = 0; m < numberOfMoves; m++) {
+							// this helps get the current deletions block
+							int currentItem = j - m;
+							gemArray[i][currentItem]->SetGemForDeletion(false);
+							// this helps find which new index it will take
+							//int newIndex = currentItem - numberOfMoves + 1;
+							// we add one because arrays are zero indexed
+							int newIndex = currentItem - (currentItem - numberOfMoves + 1 + m);
+							std::cout << "item: [" << i << "," << currentItem << "] moved to array at [" << i << "," << newIndex << "]" << std::endl;
+
+							// add the new block at the top
+							int randomNumber = GetRandomNumber();
+							gemArray[i][currentItem]->SetColumnPosition(-gemSize * (m + 1));
+							//gemArray[i][currentItem]->UpdatePostion(gemSize * (numberOfMoves - 1 - m ), gemSize * i);
+							gemArray[i][currentItem]->UpdatePostion(gemSize * i, gemSize * (numberOfMoves - 1 - m));
+							gemArray[i][currentItem]->UpdateGemTexture((GetTextureFromNumber(randomNumber)));
+							gemArray[i][currentItem]->SetGemType(randomNumber);
+
+							tempArray[newIndex] = gemArray[i][currentItem];
+							arrayItemsCounter++;
+						}
+
+						// we add one because arrays are zero indexed
+						int itemsRemaining = j - numberOfMoves + 1;
+						std::cout << itemsRemaining << std::endl;
+
+						for (int m = 0; m < itemsRemaining; m++)
+						{
+							gemArray[i][m]->UpdatePostion(gemSize * i, gemSize * (m + numberOfMoves));
+							tempArray[m + numberOfMoves] = gemArray[i][m];
+							std::cout << "Moving item from " << m << " to " << m + numberOfMoves << std::endl;
+							arrayItemsCounter++;
+						}
+
+
+						// add all the gems back to the orgianal array :-)
+						for (int m = 0; m < arrayItemsCounter; m++) {
+							gemArray[i][m] = tempArray[m];
+						}
+
+						// finished updating the row!
+						gemsToAdd[i] = 0;
+					}
 				}
 			}
 		}
 	}
 }
 
+// Given an random number, returns a gem asset path
 const char* Grid::GetTextureFromNumber(int randNumber)
 {
 	switch (randNumber)
@@ -327,6 +379,7 @@ const char* Grid::GetTextureFromNumber(int randNumber)
 		return RedGemPath;
 		break;
 	default:
+		return BlueGemPath;
 		break;
 	}
 }
