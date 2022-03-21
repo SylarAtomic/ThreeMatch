@@ -21,6 +21,8 @@ Grid::Grid(SDL_Renderer* _renderer)
 
 	// Build the display array
 	BuildImageGrid();
+
+	CreateMinMatchs();
 }
 
 // Resets the gird and gets it ready to start again - Here we go again!
@@ -34,6 +36,9 @@ void Grid::Restart()
 
 	// Build the display array
 	BuildImageGrid();
+
+	// After building the array, we need to add in at some possible matches
+	CreateMinMatchs();
 
 	// Reset the score, no cheating!!!
 	score = 0;
@@ -62,8 +67,8 @@ void Grid::BuildStartingGrid()
 			}
 			else {
 				// set the array value to a value that != to the previous cell
-				startingGridArray[i][j] = GetRandomNumberWithExclusion(startingGridArray[i][j - 1]);
-				std::cout << "my name is: " << i << j << std::endl;
+				// startingGridArray[i][j] = GetRandomNumberWithExclusion(startingGridArray[i][j - 1]);
+				startingGridArray[i][j] = GetRandomNumber();
 			}
 		}
 	}
@@ -76,6 +81,176 @@ void Grid::BuildStartingGrid()
 
 	// Debug to console
 	// PrintGrid();
+}
+
+// TODO: This can be improved! Would be a good idea to pick a random direction as the start
+// Need to move each of the "checks" to their own functions
+// Updates the grid matches to make sure we have certain amount of matches
+void Grid::CreateMinMatchs()
+{
+	// TODO move to own function
+	bool checkArray[10][10];
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			checkArray[i][j] = true;
+		}
+	}
+
+	for (int i = 0; i < minMatches; i++) 
+	{
+		int randomXPos = rand() % 10;
+		int randomYPos = rand() % 10;
+		int counter = 0;
+		bool isChecking = true;
+		int randomGem = GetRandomNumber();
+
+		while (isChecking) 
+		{
+			// Prevent it running until the end of time if the rand god aren't with us
+			if (counter > 5)
+			{
+				std::cout << "Was not able to gaurentee " << minMatches << ". I have brought dishonor! :-(" << std::endl;
+				isChecking = false;
+			}
+
+			// Start start by checking if we can fit in an a row
+			// RIGHT
+			if (randomXPos + minMatchSize <= 9) {
+				// We can fit it allong the x axis
+				// Now we check if we have put any gems in these locations before
+				bool isSafe = true;
+
+				for (int j = 0; j < minMatchSize; j ++)
+				{
+					// check if we can fit the block
+					if (checkArray[randomXPos + j][randomYPos] == false) 
+					{
+						isSafe = false;
+						break;
+					}
+				}
+
+				if (isSafe)
+				{
+					for (int j = 0; j < minMatchSize; j++)
+					{
+						gemArray[randomXPos + j][randomYPos]->SetGemType(randomGem);
+						gemArray[randomXPos + j][randomYPos]->UpdateGemTexture(GetTextureFromNumber(randomGem));
+						checkArray[randomXPos + j][randomYPos] = false;
+					}
+
+					// Break the loop!
+					isChecking = false;
+
+					std::cout << "Place a " << minMatchSize << " at [" << randomXPos << "," << randomYPos << "] RIGHT Type: " << randomGem << std::endl;
+				}
+				
+			}
+			// to the left to the left!
+			// LEFT
+			else if (randomXPos - minMatchSize >= 0)
+			{
+				bool isSafe = true;
+
+				for (int j = 0; j < minMatchSize; j++)
+				{
+					// check if we can fit the block
+					if (checkArray[randomXPos - j][randomYPos] == false)
+					{
+						isSafe = false;
+						break;
+					}
+				}
+
+				if (isSafe)
+				{
+					for (int j = 0; j < minMatchSize; j++)
+					{
+						gemArray[randomXPos - j][randomYPos]->SetGemType(randomGem);
+						gemArray[randomXPos - j][randomYPos]->UpdateGemTexture(GetTextureFromNumber(randomGem));
+						checkArray[randomXPos - j][randomYPos] = false;
+					}
+
+					// Break the loop!
+					isChecking = false;
+
+					std::cout << "Place a " << minMatchSize << " at [" << randomXPos << "," << randomYPos << "] LEFT Type: " << randomGem << std::endl;
+				}
+			} 
+			// well x is a pain so lets try side ways
+			// DOWN
+			else if (randomYPos + minMatchSize <= 9)
+			{
+				bool isSafe = true;
+
+				for (int j = 0; j < minMatchSize; j++)
+				{
+					// check if we can fit the block
+					if (checkArray[randomXPos][randomYPos + j] == false)
+					{
+						isSafe = false;
+						break;
+					}
+				}
+
+				if (isSafe)
+				{
+					for (int j = 0; j < minMatchSize; j++)
+					{
+						gemArray[randomXPos][randomYPos + j]->SetGemType(randomGem);
+						gemArray[randomXPos][randomYPos + j]->UpdateGemTexture(GetTextureFromNumber(randomGem));
+						checkArray[randomXPos][randomYPos + j] = false;
+					}
+
+					// Break the loop!
+					isChecking = false;
+
+					std::cout << "Place a " << minMatchSize << " at [" << randomXPos << "," << randomYPos << "] DOWN Type: " << randomGem  << std::endl;
+				}
+			}
+			// UP
+			//  
+			else if (randomYPos - minMatchSize >= 0)
+			{
+				bool isSafe = true;
+
+				for (int j = 0; j < minMatchSize; j++)
+				{
+					// check if we can fit the block
+					if (checkArray[randomXPos][randomYPos - j] == false)
+					{
+						isSafe = false;
+						break;
+					}
+				}
+
+				if (isSafe)
+				{
+					for (int j = 0; j < minMatchSize; j++)
+					{
+						gemArray[randomXPos][randomYPos - j]->SetGemType(randomGem);
+						gemArray[randomXPos][randomYPos - j]->UpdateGemTexture(GetTextureFromNumber(randomGem));
+						checkArray[randomXPos][randomYPos - j] = false;
+					}
+
+					// Break the loop!
+					isChecking = false;
+
+					std::cout << "Place a " << minMatchSize << " at [" << randomXPos << "," << randomYPos << "] UP Type: " << randomGem  << std::endl;
+				}
+			}
+
+			// reset the numbers as we couldn't find a valid match
+			randomXPos = rand() % 10;
+			randomYPos = rand() % 10;
+
+			// increase the counter so we can try again
+			counter++;
+		}
+
+	}
+
 }
 
 // Get a random number that isn't the one included
@@ -282,8 +457,7 @@ void Grid::MoveGemsDown()
 						GemObject* tempGem = gemArray[i][j];
 						int numberOfSwaps = j;
 						for (int m = 0; m < numberOfSwaps; m++) {
-							//std::cout << "Swapping: [" << i << "," << j << "] with [" << numberOfSwaps << "," << j  << "]" << std::endl;
-							std::cout << "Swapping: [" << i << "," << j << "] with [" << i << "," << numberOfSwaps - m - 1<< "]" << std::endl;
+							//std::cout << "Swapping: [" << i << "," << j << "] with [" << i << "," << numberOfSwaps - m - 1<< "]" << std::endl;
 							gemArray[i][numberOfSwaps - m] = gemArray[i][numberOfSwaps - m - 1];
 							gemArray[i][numberOfSwaps - m]->UpdatePostion(i * gemSize, (numberOfSwaps - m) * gemSize);
 						}

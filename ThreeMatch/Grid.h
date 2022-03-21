@@ -25,6 +25,7 @@ private:
 	void CheckUpAndDown(int x, int y, int gemType);
 	void CheckLeftRight(int x, int y, int gemType);
 	void BuildImageGrid();
+	void CreateMinMatchs();
 
 	const char* GetTextureFromNumber(int randNumber);
 		// debugging
@@ -33,6 +34,10 @@ private:
 	// Variables
 	// Holds a array of GemObjects
 	GemObject* gemArray[10][10];
+
+	// Specify min number of matches
+	int minMatches = 3;
+	int minMatchSize = 3;
 
 	const int numberOfGems = 3;
 	const int gemSize = 96;
