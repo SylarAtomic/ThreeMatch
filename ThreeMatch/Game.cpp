@@ -17,6 +17,7 @@ SDL_Event Game::event;
 //GemObject* GemArrayTest[5] = { gem , gem , gem , gem , gem };
 
 SDL_Texture* TextureBackground;
+SDL_Texture* EndScreen;
 SDL_Texture* TextureGem;
 TextDrawer* ScoreText;
 
@@ -64,6 +65,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	}
 
 	TextureBackground = TextureManager::LoadTexture("textures/Background.jpg", renderer);
+	EndScreen = TextureManager::LoadTexture("textures/EndScreen.png", renderer);
 	TextureGem = TextureManager::LoadTexture("textures/BlueGem.png", renderer);
 
 
@@ -75,9 +77,12 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	ScoreText = new TextDrawer(renderer);
 
+	ScoreText->SetToDefaultPosition();
+
 	grid = new Grid(renderer);
 
 	std::cout << renderer << std::endl;
+
 
 
 
@@ -122,39 +127,34 @@ void Game::hanldeMouseClick()
 
 	SDL_Log("Mouse cursor is at %d, %d", x, y);
 
-	// Check if the mouse click took place over a gem
-	if (x < gridSize && y < gridSize)
+	if (hasGameEnded) {
+		// this is a hack to check if we are clicking on the "button"
+		
+		// restart button check
+		if (x < 920 && x > 654 && y > 612 && y < 700 ) {
+			std::cout << "restart button clicked!" << std::endl;
+			restartGame();
+		}
+
+		// quit button check
+		if (x < 1270 && x > 1000 && y > 612 && y < 700) {
+			std::cout << "quit button clicked!" << std::endl;
+			clean();
+		}
+
+	} else 
 	{
-		std::cout << "Gem was clicked on!" << std::endl;
+		// Check if the mouse click took place over a gem
+		if (x < gridSize && y < gridSize)
+		{
+			std::cout << "Gem was clicked on!" << std::endl;
 
-		int gemArrayPosX = floor(x / gemSize);
-		int gemArrayPosY = floor(y / gemSize);
+			int gemArrayPosX = floor(x / gemSize);
+			int gemArrayPosY = floor(y / gemSize);
 
-		handleGemRemove(gemArrayPosX, gemArrayPosY);
-	
-
-	//// find which gem was clicked on
-	//// gird size is know, the postion is equal to the x value / the gem size
-	
-	//std::cout << "gemArrayPosX: " << gemArrayPosX << " gemArrayPosY:" << gemArrayPosY << std::endl;
-
-	//// this check if we are on the first or second click
-	//if (firstClickGemPosX == -1) {
-	//	firstClickGemPosX = gemArrayPosX;
-	//	firstClickGemPosY = gemArrayPosY;
-	//}
-	//else {
-	//	secondClickGemPosX = gemArrayPosX;
-	//	secondClickGemPosY = gemArrayPosY;
-
-	//	std::cout << "Swapping: [" << firstClickGemPosX << "," << firstClickGemPosY << "] and [" << secondClickGemPosX << "," << secondClickGemPosY << "]" << std::endl;
-
-	//	handleGemSwap();
-	//}
-
+			handleGemRemove(gemArrayPosX, gemArrayPosY);
+		}
 	}
-
-
 }
 
 void Game::handleGemSwap()
@@ -179,19 +179,11 @@ void Game::handleGemSwap()
 void Game::handleGemRemove(int xPos, int yPos)
 {
 	grid->RemoveGem(xPos, yPos);
+	gameCount++;
 }
 
 void Game::update()
 {
-	cnt++;
-	destR.h = 128;
-	destR.w = 128;
-
-	destR.x = cnt;
-	destR.y = 200;
-
-	//gem->Update();
-	//gemTwo->Update();
 	grid->UpdateGrid();
 }
 
@@ -201,25 +193,29 @@ void Game::render()
 	// Put all the items that will be rendered betwen RenderClear and RenderPresent!!!!!
 
 	SDL_RenderCopy(renderer, TextureBackground, NULL, NULL);
+
+	
+
 	//SDL_RenderCopy(renderer, TextureGem, NULL, &destR);
+	if (gameCount == 10)
+	{
+		hasGameEnded = true;
 
-	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(FontAreal, "test", FontWhite);
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+		ScoreText->SetToEndGamePosition();
+		
+	}
 
+	if (hasGameEnded) {
+		SDL_RenderCopy(renderer, EndScreen, NULL, NULL);
+	}
+	else {
+		grid->RenderGrid();
+
+		ScoreText->UpdateScore(grid->GetScore());
+	}
 	
-
-	SDL_Rect Message_rect; //create a rect
-	Message_rect.x = 0;  //controls the rect's x coordinate 
-	Message_rect.y = 0; // controls the rect's y coordinte
-	Message_rect.w = 100; // controls the width of the rect
-	Message_rect.h = 100; // controls the height of the rect
-
-	SDL_RenderCopy(renderer, Message, NULL, NULL);
-	
-	grid->RenderGrid();
-
-	ScoreText->UpdateScore(grid->GetScore());
 	ScoreText->RenderText();
+	
 
 
 	//GemArrayTest[0]->Render();
@@ -235,4 +231,22 @@ void Game::clean()
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 	std::cout << "Game Cleaned" << std::endl;
+}
+
+void Game::restartGame()
+{
+	// Reset game counter
+	gameCount = 0;
+
+	// Reset grid score
+	grid->Restart();
+
+	// Reset the score
+	ScoreText->UpdateScore(0);
+
+	// Reset the position of the score value
+	ScoreText->SetToDefaultPosition();
+
+	// Update the game state
+	hasGameEnded = false;
 }

@@ -19,6 +19,7 @@ public:
 	void update();	// Update game elements
 	void render();	// Render to clean
 	void clean(); // Clean game memory
+	void restartGame();
 
 	bool isRunning() { return running; };
 	static SDL_Event event;
@@ -28,6 +29,8 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	int cnt = 0;
+	int gameCount = 0;
+	bool hasGameEnded = false;
 
 	int gemSize = 96;
 	int gridSize = 96 * 10;

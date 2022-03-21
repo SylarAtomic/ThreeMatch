@@ -23,14 +23,6 @@ GemObject::GemObject(const char* textureSheet, SDL_Renderer* _renderer, int x, i
 
 void GemObject::Update()
 {
-	//xPos = 0;
-	//yPos = 100;
-
-	//srcRect.h = 128;
-	//srcRect.w = 128;
-	//srcRect.x = 0;
-	//srcRect.y = 0;
-
 	//  Animated the movement from the current position to where the gem needs to move to
 	if (updatePosX != xPos)
 	{

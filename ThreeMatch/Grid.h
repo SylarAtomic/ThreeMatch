@@ -13,6 +13,7 @@ public:
 	void RemoveGem(int x, int y);
 	void MoveGemsDown();
 	int GetScore() { return score; };
+	void Restart();
 
 	GemObject* returnGemOne() { return gemOne; };
 

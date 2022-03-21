@@ -17,8 +17,22 @@ Grid::Grid(SDL_Renderer* _renderer)
 	BuildStartingGrid();
 
 	// Build the display array
-
 	BuildImageGrid();
+}
+
+void Grid::Restart()
+{
+
+	std::cout << "Game is restarting... Good luck!" << std::endl;
+
+	// Build the starting array
+	BuildStartingGrid();
+
+	// Build the display array
+	BuildImageGrid();
+
+	// Reset the score, no cheating!!!
+	score = 0;
 }
 
 void Grid::BuildStartingGrid()

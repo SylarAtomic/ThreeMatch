@@ -8,16 +8,21 @@ public:
 	TextDrawer(SDL_Renderer* _renderer);
 	void UpdateScore(int value);
 	void RenderText();
-	void UpdateText();
 	void UpdateDigitDisplay();
 	void UpdateDigitTextures();
 	void BuildDigitTextureArray();
+	void SetToDefaultPosition() { startingPosX = 1400; startingPosY = 0; UpdateTextPosition(); };
+	void SetToEndGamePosition() { startingPosX = 980; startingPosY = 460; UpdateTextPosition(); };
+	void UpdateTextPosition();
 	SDL_Texture* GetTexture(int num);
 
 private:
-	int score = 1234;
+	int score = 0;
 	int digitOffset = 50;
 	int scoreDigitArray[4];
+
+	int startingPosX = 1400;
+	int startingPosY = 0;
 
 	SDL_Renderer* renderer;
 	SDL_Texture* scoreTexture;

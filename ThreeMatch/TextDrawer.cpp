@@ -14,8 +14,7 @@ TextDrawer::TextDrawer(SDL_Renderer* _renderer)
 
 	scoreTexture = TextureManager::LoadTexture("textures/Score.png", _renderer);
 
-	scoreDestRect.x = 1080;
-	scoreDestRect.y = 0;
+
 	scoreDestRect.w = 380;
 	scoreDestRect.h = 128;
 
@@ -26,27 +25,18 @@ TextDrawer::TextDrawer(SDL_Renderer* _renderer)
 	digitThree = GetTexture(0);
 	digitFour = GetTexture(0);
 
-	int startingPos = 1400;
-
-	digitOneDestRect.x = startingPos;
-	digitOneDestRect.y = 0;
 	digitOneDestRect.w = 128;
 	digitOneDestRect.h = 128;
 
-	digitTwoDestRect.x = startingPos + (digitOffset);
-	digitTwoDestRect.y = 0;
 	digitTwoDestRect.w = 128;
 	digitTwoDestRect.h = 128;
 
-	digitThreeDestRect.x = startingPos + (digitOffset * 2);
-	digitThreeDestRect.y = 0;
 	digitThreeDestRect.w = 128;
 	digitThreeDestRect.h = 128;
 
-	digitFourDestRect.x = startingPos + (digitOffset * 3);
-	digitFourDestRect.y = 0;
 	digitFourDestRect.w = 128;
 	digitFourDestRect.h = 128;
+
 
 	
 }
@@ -92,6 +82,24 @@ void TextDrawer::BuildDigitTextureArray()
 	{
 		scoreDigitArray[i] = 0;
 	}
+}
+
+void TextDrawer::UpdateTextPosition()
+{
+	scoreDestRect.x = startingPosX - 320;
+	scoreDestRect.y = startingPosY;
+
+	digitOneDestRect.x = startingPosX;
+	digitOneDestRect.y = startingPosY;
+
+	digitTwoDestRect.x = startingPosX + (digitOffset);
+	digitTwoDestRect.y = startingPosY;
+
+	digitThreeDestRect.x = startingPosX + (digitOffset * 2);
+	digitThreeDestRect.y = startingPosY;
+
+	digitFourDestRect.x = startingPosX + (digitOffset * 3);
+	digitFourDestRect.y = startingPosY;
 }
 
 SDL_Texture* TextDrawer::GetTexture(int num)
