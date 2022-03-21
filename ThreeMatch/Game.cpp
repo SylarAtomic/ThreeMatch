@@ -192,17 +192,15 @@ void Game::render()
 	SDL_RenderClear(renderer);
 	// Put all the items that will be rendered betwen RenderClear and RenderPresent!!!!!
 
+	// Oh look a background
 	SDL_RenderCopy(renderer, TextureBackground, NULL, NULL);
 
-	
-
-	//SDL_RenderCopy(renderer, TextureGem, NULL, &destR);
+	// game count check
 	if (gameCount == 10)
 	{
 		hasGameEnded = true;
 
 		ScoreText->SetToEndGamePosition();
-		
 	}
 
 	if (hasGameEnded) {
@@ -210,27 +208,16 @@ void Game::render()
 	}
 	else {
 		grid->RenderGrid();
-
-		ScoreText->UpdateScore(grid->GetScore());
 	}
 	
+	// Update the score
+	ScoreText->UpdateScore(grid->GetScore());
+
+	// Update the Score renderer
 	ScoreText->RenderText();
-	
 
-
-	//GemArrayTest[0]->Render();
-
-
-	// This is the final call, nothing should go below this
+	// This is the final call, nothing should go below this, otherwise it wont render :-(
 	SDL_RenderPresent(renderer);
-}
-
-void Game::clean()
-{
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
-	SDL_Quit();
-	std::cout << "Game Cleaned" << std::endl;
 }
 
 void Game::restartGame()
@@ -249,4 +236,12 @@ void Game::restartGame()
 
 	// Update the game state
 	hasGameEnded = false;
+}
+
+void Game::clean()
+{
+	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
+	SDL_Quit();
+	std::cout << "Game Cleaned" << std::endl;
 }
