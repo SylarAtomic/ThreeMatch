@@ -1,11 +1,18 @@
-Setup - 1h 35 minutes
-Get the libary download, set up the project, set up dependancies.
-Set up basic game function. Initial game loop. Set a background.
+Setup - 2 hours
+- Get the libary download, set up the project, set up dependancies. Never used this library before
+- Set up basic game function. Initial game loop. Set a background.
 // Game currently launches, shows the background, and has one gem displayed - Yay
 
-Getting grid to display with Grid and Gem class- 2 Hours - Remember to call Update....
+Getting grid to display with Grid and Gem class - 2 Hours - Remember to call Update....
 
-MouseClick and Swap function - 1 hour 30min
+MouseClick and Swap function - 1 hour 30 min
 
-Removing Blocks and adding new blocks (single column) - 3 hours
-Detection Algorth - ???
+Removing Blocks and adding new blocks (single column) - 5 hours
+
+Detection Algorth - 2 hours
+
+Score "text" - 1 hour 30 min
+
+Some bug fixing - 1 hour
+
+Cleaning up (remove commentted out code, add usefull comments) - 1 hour

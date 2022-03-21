@@ -8,15 +8,16 @@ public:
 
 	void Update();
 	void Render();
-	void ChangeTexture(const char* textureSheet);
 	void UpdatePostion(int newX);
 	void UpdatePostion(int newX, int newY);
 	void UpdateGemTexture(const char* textureSheet);
-	int  GetGemType() { return gemType; };
 	void SetGemType(int value) { gemType = value; };
 	void SetGemForDeletion(bool value) { isDeleted = value; };
-	bool GemDeletionStatus() { return isDeleted; };
 	void SetColumnPosition(int pos);
+
+	bool GemDeletionStatus() { return isDeleted; };
+
+	int  GetGemType() { return gemType; };
 
 private:
 	int xPos = 0;
@@ -34,7 +35,6 @@ private:
 
 	// must be a factor of 96!
 	int gemMoveSpeed = 2;
-
 
 	SDL_Texture* gemTexture;
 	SDL_Rect srcRect, destRect;

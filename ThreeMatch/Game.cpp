@@ -1,27 +1,11 @@
 #include "Game.h"
 #include <iostream>
-
 #include "TextureManager.h"
 #include "GemObject.h"
 #include "Grid.h"
 #include "TextDrawer.h"
 
-GemObject* gem;
-GemObject* gemTwo;
-GemObject* gemThree;
-Grid* grid;
-TTF_Font* FontAreal;
-
 SDL_Event Game::event;
-
-//GemObject* GemArrayTest[5] = { gem , gem , gem , gem , gem };
-
-SDL_Texture* TextureBackground;
-SDL_Texture* EndScreen;
-SDL_Texture* TextureGem;
-TextDrawer* ScoreText;
-
-SDL_Rect srcR, destR;
 
 Game::Game()
 {
@@ -37,6 +21,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 {
 	int flags = 0;
 
+	// if we should launch in fullscreen
 	if (fullscreen)
 	{
 		flags = SDL_WINDOW_FULLSCREEN;
@@ -63,41 +48,24 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	else {
 		running = false;
 	}
-
+	 
+	// Set the background image texture
 	TextureBackground = TextureManager::LoadTexture("textures/Background.jpg", renderer);
+
+	// Set the end screen image texture
 	EndScreen = TextureManager::LoadTexture("textures/EndScreen.png", renderer);
-	TextureGem = TextureManager::LoadTexture("textures/BlueGem.png", renderer);
 
-
-	FontAreal = TTF_OpenFont("font/arial.ttf", 24);
-
-	//gem = new GemObject("textures/BlueGem.png", renderer, 500, 500);
-	//gemTwo = new GemObject("textures/GreenGem.png", renderer, 400, 500);
-	//gemThree = new GemObject("textures/RedGem.png", renderer, 300, 500);
-
+	// Create the score screen (disapled on the top right)
 	ScoreText = new TextDrawer(renderer);
 
+	// Set score screen to default position
 	ScoreText->SetToDefaultPosition();
 
+	// Create the grid of gems
 	grid = new Grid(renderer);
-
-	std::cout << renderer << std::endl;
-
-
-
-
-
-	//GemArrayTest[0] = new GemObject("textures/GreenGem.png", renderer, 200, 500);
-	//std::cout << GemArrayTest << std::endl; 
-	//std::cout << GemArrayTest[0] << std::endl;
-	//std::cout << GemArrayTest[1] << std::endl;
-
-	//grid(renderer);
-	// Build the Grid
-	// 
-	//grid.BuildStartingGrid();
 }
 
+// Handle events like quit and button press
 void Game::handleEvents()
 {
 	
@@ -116,17 +84,26 @@ void Game::handleEvents()
 	}
 }
 
+// Handles button click - Depending on game state, will  be used to clicking on gems or buttons
 void Game::hanldeMouseClick()
 {
+	// x, y values for the mouse click location
 	int x, y;
 	Uint32 buttons;
 
-	SDL_PumpEvents();  // make sure we have the latest mouse state.
+	// Make sure we have the latest mouse state.
+	SDL_PumpEvents();  
 
+	// Get the mouse button
 	buttons = SDL_GetMouseState(&x, &y);
+	
+	// Debugging
+	// SDL_Log("Mouse cursor is at %d, %d", x, y);
 
-	SDL_Log("Mouse cursor is at %d, %d", x, y);
-
+	/*
+	* hasGameEnded = true - one score screen - checking to click on buttons
+	* hasGameEnded = false - normal game loop - clicking on gems 
+	*/
 	if (hasGameEnded) {
 		// this is a hack to check if we are clicking on the "button"
 		
@@ -144,19 +121,23 @@ void Game::hanldeMouseClick()
 
 	} else 
 	{
-		// Check if the mouse click took place over a gem
+		// Check if the mouse click took place over a gem (inside the gem box)
 		if (x < gridSize && y < gridSize)
 		{
-			std::cout << "Gem was clicked on!" << std::endl;
+			// Debuggin
+			// std::cout << "Gem was clicked on!" << std::endl;
 
+			// help to convert from x / y to array position: range[0-9]
 			int gemArrayPosX = floor(x / gemSize);
 			int gemArrayPosY = floor(y / gemSize);
 
+			// time to remove some gems, check for match, drop gems, all the fancy fancy
 			handleGemRemove(gemArrayPosX, gemArrayPosY);
 		}
 	}
 }
 
+// This allows for swapping for two gems position
 void Game::handleGemSwap()
 {
 	// check if valid swap
@@ -176,17 +157,20 @@ void Game::handleGemSwap()
 	secondClickGemPosY = -1;
 }
 
+// Tell the grid to remove a gem and increase game count
 void Game::handleGemRemove(int xPos, int yPos)
 {
 	grid->RemoveGem(xPos, yPos);
 	gameCount++;
 }
 
+// This is called every tick - put all update stuff in here
 void Game::update()
 {
 	grid->UpdateGrid();
 }
 
+// This is called every tick - all rerenders go in here
 void Game::render()
 {
 	SDL_RenderClear(renderer);
@@ -220,6 +204,7 @@ void Game::render()
 	SDL_RenderPresent(renderer);
 }
 
+// Reset value and restart the game
 void Game::restartGame()
 {
 	// Reset game counter
@@ -238,6 +223,7 @@ void Game::restartGame()
 	hasGameEnded = false;
 }
 
+// The finally count down I mean call. Put all the clean up in here. 
 void Game::clean()
 {
 	SDL_DestroyWindow(window);

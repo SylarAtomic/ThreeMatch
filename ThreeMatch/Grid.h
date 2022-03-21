@@ -6,48 +6,43 @@ class Grid {
 public:
 	Grid();
 	Grid(SDL_Renderer* _renderer);
+	
 	void BuildStartingGrid();
 	void RenderGrid();
 	void UpdateGrid();
 	void SwapGems(int firstGemXpos, int firstGemYPos, int secondGemXPos, int secondGemYPos);
 	void RemoveGem(int x, int y);
 	void MoveGemsDown();
-	int GetScore() { return score; };
 	void Restart();
 
-	GemObject* returnGemOne() { return gemOne; };
+	int GetScore() { return score; };
 
 private:
-	// functions
+	// Functions
 	int GetRandomNumber();
 	int GetRandomNumberWithExclusion(int exclusion);
+	
 	void CheckUpAndDown(int x, int y, int gemType);
 	void CheckLeftRight(int x, int y, int gemType);
-	const char* GetTextureFromNumber(int randNumber);
 	void BuildImageGrid();
+
+	const char* GetTextureFromNumber(int randNumber);
 		// debugging
 	void PrintGrid();
 
-	// variables
-	int startingGridArray[10][10];
+	// Variables
+	// Holds a array of GemObjects
 	GemObject* gemArray[10][10];
 
 	const int numberOfGems = 3;
 	const int gemSize = 96;
-	int gemsToAdd[10];
-	
-	SDL_Renderer* renderer;
-
 	const char* BlueGemPath = "textures/BlueGem.png";
 	const char* GreenGemPath = "textures/GreenGem.png";
 	const char* RedGemPath = "textures/RedGem.png";
-
-	int numberOfMatches = 0;
+	int startingGridArray[10][10];
+	int gemsToAdd[10];
 	int score = 0;
+	int numberOfMatches = 0;
 
-	GemObject* gemOne;
-	GemObject* gemTwo;
-	GemObject* gemThree;
-	GemObject* gemFour;
-	GemObject* gemFive;
+	SDL_Renderer* renderer;
 };

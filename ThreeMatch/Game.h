@@ -21,20 +21,19 @@ public:
 	void clean(); // Clean game memory
 	void restartGame();
 
-	bool isRunning() { return running; };
-	static SDL_Event event;
+	bool isRunning() { return running; }; // returns running state
+	static SDL_Event event; // event variable 
 
 private:
 	bool running;
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	bool hasGameEnded = false;
+	
 	int cnt = 0;
 	int gameCount = 0;
-	bool hasGameEnded = false;
 
 	int gemSize = 96;
 	int gridSize = 96 * 10;
-
+	
 	// some variable to help swap gems
 	// -1 will be the unset state, can use this for checking first / second click
 	int firstClickGemPosX = -1;
@@ -42,6 +41,14 @@ private:
 
 	int secondClickGemPosX = -1;
 	int secondClickGemPosY = -1;
+
+	class Grid* grid;
+	class TextDrawer* ScoreText;
+
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+	SDL_Texture* TextureBackground;
+	SDL_Texture* EndScreen;
 
 	TTF_Font* FontAreal = TTF_OpenFont("font/arial.ttf", 24);
 	SDL_Color FontWhite = { 255, 255, 255 };
