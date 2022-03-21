@@ -12,6 +12,7 @@ public:
 	void SwapGems(int firstGemXpos, int firstGemYPos, int secondGemXPos, int secondGemYPos);
 	void RemoveGem(int x, int y);
 	void MoveGemsDown();
+	int GetScore() { return score; };
 
 	GemObject* returnGemOne() { return gemOne; };
 

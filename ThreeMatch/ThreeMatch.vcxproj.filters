@@ -30,6 +30,9 @@
     <ClCompile Include="GemObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextDrawer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="GemObject.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextDrawer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -128,8 +128,6 @@ void Grid::BuildImageGrid()
 		}
 	}
 
-	gemArray[9][0]->UpdateGemTexture("textures/BlankGem.png");
-
 
 	//gemOne =  new GemObject("textures/BlueGem.png", renderer, 0 * gemSize, 0 * gemSize);
 	//gemTwo = new GemObject("textures/GreenGem.png", renderer, 0 * gemSize, 1 * gemSize);

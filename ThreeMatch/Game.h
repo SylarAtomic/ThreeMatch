@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "GemObject.h"
+#include "SDL_ttf.h"
 
 class Game {
 
@@ -38,4 +39,7 @@ private:
 
 	int secondClickGemPosX = -1;
 	int secondClickGemPosY = -1;
+
+	TTF_Font* FontAreal = TTF_OpenFont("font/arial.ttf", 24);
+	SDL_Color FontWhite = { 255, 255, 255 };
 };

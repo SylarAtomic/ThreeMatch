@@ -4,11 +4,13 @@
 #include "TextureManager.h"
 #include "GemObject.h"
 #include "Grid.h"
+#include "TextDrawer.h"
 
 GemObject* gem;
 GemObject* gemTwo;
 GemObject* gemThree;
 Grid* grid;
+TTF_Font* FontAreal;
 
 SDL_Event Game::event;
 
@@ -16,6 +18,7 @@ SDL_Event Game::event;
 
 SDL_Texture* TextureBackground;
 SDL_Texture* TextureGem;
+TextDrawer* ScoreText;
 
 SDL_Rect srcR, destR;
 
@@ -63,13 +66,21 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	TextureBackground = TextureManager::LoadTexture("textures/Background.jpg", renderer);
 	TextureGem = TextureManager::LoadTexture("textures/BlueGem.png", renderer);
 
+
+	FontAreal = TTF_OpenFont("font/arial.ttf", 24);
+
 	//gem = new GemObject("textures/BlueGem.png", renderer, 500, 500);
 	//gemTwo = new GemObject("textures/GreenGem.png", renderer, 400, 500);
 	//gemThree = new GemObject("textures/RedGem.png", renderer, 300, 500);
 
+	ScoreText = new TextDrawer(renderer);
+
 	grid = new Grid(renderer);
 
 	std::cout << renderer << std::endl;
+
+
+
 
 	//GemArrayTest[0] = new GemObject("textures/GreenGem.png", renderer, 200, 500);
 	//std::cout << GemArrayTest << std::endl; 
@@ -192,15 +203,29 @@ void Game::render()
 	SDL_RenderCopy(renderer, TextureBackground, NULL, NULL);
 	//SDL_RenderCopy(renderer, TextureGem, NULL, &destR);
 
-	//gem->Render();
-	//gemTwo->Render();
-	//gemThree->Render();
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(FontAreal, "test", FontWhite);
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+	
+
+	SDL_Rect Message_rect; //create a rect
+	Message_rect.x = 0;  //controls the rect's x coordinate 
+	Message_rect.y = 0; // controls the rect's y coordinte
+	Message_rect.w = 100; // controls the width of the rect
+	Message_rect.h = 100; // controls the height of the rect
+
+	SDL_RenderCopy(renderer, Message, NULL, NULL);
+	
 	grid->RenderGrid();
+
+	ScoreText->UpdateScore(grid->GetScore());
+	ScoreText->RenderText();
+
 
 	//GemArrayTest[0]->Render();
 
 
-	// Thi is the final call, nothing should go below this
+	// This is the final call, nothing should go below this
 	SDL_RenderPresent(renderer);
 }
 
