@@ -17,3 +17,10 @@ Dependancies:
  - SDL2
  - SDL2_image-2.0.5
  - SDL_ttf-main-2.0.14
+
+Images
+	Background:		https://pixabay.com/illustrations/planet-sience-fiction-fantasy-world-1702788/ 
+	Gem:
+		- Green:	https://www.flaticon.com/free-icon/gem_2778273
+		- Red:		https://www.flaticon.com/premium-icon/gem_4251687
+		- Blue:		https://www.flaticon.com/free-icon/gem_785126
