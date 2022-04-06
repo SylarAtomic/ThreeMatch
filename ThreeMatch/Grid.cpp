@@ -299,9 +299,9 @@ void Grid::BuildImageGrid()
 			char texturePath;
 			// TODO: Use texturePath in the switch
 
-			// 0 - Blue Gem - "textures/BlueGem.png"
-			// 1 - Green Gem - "textures/GreenGem.png"
-			// 2 - Red Gem - "textures/RedGem.png"
+			// 0 - Blue Gem - "textures/BlueGem.png"	- https://www.flaticon.com/free-icon/gem_785126
+			// 1 - Green Gem - "textures/GreenGem.png" - https://www.flaticon.com/free-icon/gem_2778273
+			// 2 - Red Gem - "textures/RedGem.png" - https://www.flaticon.com/premium-icon/gem_4251687
 			switch (startingGridArray[i][j])
 			{
 			case 0:

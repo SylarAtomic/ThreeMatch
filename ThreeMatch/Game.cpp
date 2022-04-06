@@ -50,6 +50,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	}
 	 
 	// Set the background image texture
+	// https://pixabay.com/illustrations/planet-sience-fiction-fantasy-world-1702788/
 	TextureBackground = TextureManager::LoadTexture("textures/Background.jpg", renderer);
 
 	// Set the end screen image texture
